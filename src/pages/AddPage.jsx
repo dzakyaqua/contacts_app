@@ -1,15 +1,16 @@
 import React from 'react';
-import { addContact } from '../utils/data';
 import ContactInput from '../components/ContactInput';
 import { useNavigate } from 'react-router-dom';
- 
+import { addContact } from '../utils/api';
+
 function AddPage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
   function onAddContactHandler(contact) {
-    addContact(contact)
+    addContact(contact);
     navigate('/');
   }
- 
+
   return (
     <section>
       <h2>Tambah kontak</h2>
@@ -17,5 +18,5 @@ function AddPage() {
     </section>
   )
 }
- 
+
 export default AddPage;

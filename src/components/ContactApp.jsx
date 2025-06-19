@@ -7,36 +7,34 @@ import RegisterPage from '../pages/RegisterPage';
 import LoginPage from '../pages/LoginPage';
 import { getUserLogged, putAccessToken } from '../utils/api';
 
- 
 class ContactApp extends React.Component {
-
   constructor(props) {
     super(props);
- 
+
     this.state = {
       authedUser: null,
       initializing: true,
-
     };
 
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
     this.onLogout = this.onLogout.bind(this);
-
   }
 
   async componentDidMount() {
     const { data } = await getUserLogged();
+
     this.setState(() => {
       return {
         authedUser: data,
         initializing: false
-      }
+      };
     });
   }
 
   async onLoginSuccess({ accessToken }) {
     putAccessToken(accessToken);
     const { data } = await getUserLogged();
+
     this.setState(() => {
       return {
         authedUser: data,
@@ -50,19 +48,16 @@ class ContactApp extends React.Component {
         authedUser: null
       }
     });
+
     putAccessToken('');
   }
-
-    
-
-
+  
   render() {
-
     if (this.state.initializing) {
       return null;
     }
 
-     if (this.state.authedUser === null) {
+    if (this.state.authedUser === null) {
       return (
         <div className='contact-app'>
           <header className='contact-app__header'>
@@ -77,7 +72,7 @@ class ContactApp extends React.Component {
         </div>
       )
     }
-
+    
     return (
       <div className="contact-app">
         <header className='contact-app__header'>
@@ -94,5 +89,5 @@ class ContactApp extends React.Component {
     );
   }
 }
- 
+
 export default ContactApp;
