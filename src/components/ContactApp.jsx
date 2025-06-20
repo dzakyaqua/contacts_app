@@ -6,6 +6,7 @@ import AddPage from '../pages/AddPage';
 import RegisterPage from '../pages/RegisterPage';
 import LoginPage from '../pages/LoginPage';
 import { getUserLogged, putAccessToken } from '../utils/api';
+import { LocaleProvider } from '../contexts/LocaleContext';
 
 class ContactApp extends React.Component {
   constructor(props) {
@@ -14,6 +15,19 @@ class ContactApp extends React.Component {
     this.state = {
       authedUser: null,
       initializing: true,
+      localeContext: {
+        locale: 'id',
+        toggleLocale: () => {
+          this.setState((prevState) => {
+            return {
+              localeContext: {
+                ...prevState.localeContext,
+                locale: prevState.localeContext.locale === 'id' ? 'en' : 'id'
+              }
+            }
+          })
+        }
+      }
     };
 
     this.onLoginSuccess = this.onLoginSuccess.bind(this);
@@ -59,6 +73,7 @@ class ContactApp extends React.Component {
 
     if (this.state.authedUser === null) {
       return (
+        <LocaleProvider value={this.state.localeContext}>
         <div className='contact-app'>
           <header className='contact-app__header'>
             <h1>Aplikasi Kontak</h1>
@@ -70,22 +85,27 @@ class ContactApp extends React.Component {
             </Routes>
           </main>
         </div>
+        </LocaleProvider>
+        
       )
     }
     
     return (
-      <div className="contact-app">
-        <header className='contact-app__header'>
-          <h1>Aplikasi Kontak</h1>
-          <Navigation logout={this.onLogout} name={this.state.authedUser.name} />
-        </header>
-        <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/add" element={<AddPage />} />
-          </Routes>
-        </main>
-      </div>
+      <LocaleProvider value={this.state.localeContext}>
+        <div className="contact-app">
+          <header className='contact-app__header'>
+            <h1>Aplikasi Kontak</h1>
+            <Navigation logout={this.onLogout} name={this.state.authedUser.name} />
+          </header>
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/add" element={<AddPage />} />
+            </Routes>
+          </main>
+        </div>
+      </LocaleProvider>
+      
     );
   }
 }
